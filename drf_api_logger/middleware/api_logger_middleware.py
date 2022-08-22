@@ -97,6 +97,11 @@ class APILoggerMiddleware:
 
             headers = get_headers(request=request)
             method = request.method
+            
+            #Register user
+            user = None
+            if request.user.is_authenticated:
+                user = request.user
 
             # Log only registered methods if available.
             if len(self.DRF_API_LOGGER_METHODS) > 0 and method not in self.DRF_API_LOGGER_METHODS:
@@ -128,7 +133,8 @@ class APILoggerMiddleware:
                     response=mask_sensitive_data(response_body),
                     status_code=response.status_code,
                     execution_time=time.time() - start_time,
-                    added_on=timezone.now()
+                    added_on=timezone.now(),
+                    user = user
                 )
                 if self.DRF_API_LOGGER_DATABASE:
                     if LOGGER_THREAD:

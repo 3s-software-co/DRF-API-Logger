@@ -30,6 +30,7 @@ if database_log_enabled():
         status_code = models.PositiveSmallIntegerField(help_text='Response status code', db_index=True)
         execution_time = models.DecimalField(decimal_places=5, max_digits=8,
                                              help_text='Server execution time (Not complete response time.)')
+        user = models.ForeignKey('users.User', models.SET_NULL, null=True, blank=True, editable=False)
 
         def __str__(self):
             return self.api
